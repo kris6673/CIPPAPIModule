@@ -31,7 +31,7 @@ function Set-CIPPOneDriveShortCut {
         [string]$CustomerTenantID,
         [Parameter(Mandatory = $true)]
         [string]$Username,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [guid]$UserID,
         [Parameter(Mandatory = $true)]
         [string]$SharePointURL
