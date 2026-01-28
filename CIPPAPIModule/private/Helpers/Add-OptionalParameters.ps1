@@ -6,6 +6,9 @@
     The Add-OptionalParameters function efficiently adds non-null values from an optional 
     parameters hashtable to a target hashtable. This is a common pattern used across 
     multiple CIPP API functions to handle optional parameters.
+    
+    The function excludes both null and falsy values (false, 0, empty strings) to match
+    the original behavior of the optional parameter handling pattern.
 
 .PARAMETER TargetHashtable
     The hashtable to add the optional parameters to.
@@ -18,7 +21,7 @@
     $optionalParams = @{ City = $City; Department = $Department }
     Add-OptionalParameters -TargetHashtable $body -OptionalParameters $optionalParams
     
-    Adds non-null values from $optionalParams to $body.
+    Adds non-null and non-falsy values from $optionalParams to $body.
 
 .NOTES
     This helper function reduces code duplication across the module.
@@ -35,7 +38,8 @@ function Add-OptionalParameters {
     )
     
     foreach ($key in $OptionalParameters.Keys) {
-        if ($null -ne $OptionalParameters[$key]) {
+        # Preserve original behavior: exclude null AND falsy values
+        if ($OptionalParameters[$key]) {
             $TargetHashtable[$key] = $OptionalParameters[$key]
         }
     }
