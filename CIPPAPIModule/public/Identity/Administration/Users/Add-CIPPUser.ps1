@@ -196,11 +196,7 @@ function Add-CIPPUser {
     }
 
     # Add optional parameters to the body if they are not null
-    foreach ($key in $optionalParams.Keys) {
-        if ($optionalParams[$key]) {
-            $body[$key] = $optionalParams[$key]
-        }
-    }
+    Add-OptionalParameters -TargetHashtable $body -OptionalParameters $optionalParams
 
     Invoke-CIPPRestMethod -Endpoint $endpoint -Body $body -Method 'POST'
 }

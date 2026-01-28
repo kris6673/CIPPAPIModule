@@ -90,10 +90,7 @@ function Get-CIPPGraphRequest {
         'reverseTenantLookupProperty' = $ReverseTenantLookupProperty
     }
 
-    foreach ($key in $optionalParams.Keys) {
-        if ($null -ne $optionalParams[$key]) {
-            $params[$key] = $optionalParams[$key]
-        }
-    }
+    Add-OptionalParameters -TargetHashtable $params -OptionalParameters $optionalParams
+    
     Invoke-CIPPRestMethod -Endpoint $endpoint -Params $params
 }

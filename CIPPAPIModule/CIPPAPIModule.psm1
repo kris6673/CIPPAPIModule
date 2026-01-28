@@ -1,5 +1,6 @@
-$Functions = @(Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -Recurse -ErrorAction SilentlyContinue) + @(Get-ChildItem -Path $PSScriptRoot\private\*.ps1 -ErrorAction SilentlyContinue)
-foreach ($import in @($Functions)) {
+# Optimize function loading by using a single Get-ChildItem call with multiple paths
+$Functions = Get-ChildItem -Path "$PSScriptRoot\public", "$PSScriptRoot\private" -Filter *.ps1 -Recurse -ErrorAction SilentlyContinue
+foreach ($import in $Functions) {
     try {
         . $import.FullName
     } catch {

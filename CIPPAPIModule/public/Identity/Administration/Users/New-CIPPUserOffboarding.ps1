@@ -171,11 +171,7 @@ function New-CIPPUserOffboarding {
     }
 
     # Add optional parameters to the body if they are not null
-    foreach ($key in $optionalParams.Keys) {
-        if ($optionalParams[$key]) {
-            $body[$key] = $optionalParams[$key]
-        }
-    }
+    Add-OptionalParameters -TargetHashtable $body -OptionalParameters $optionalParams
 
     if (-not [string]::IsNullOrWhiteSpace($OnedriveAccessTo)) {
         $body.OnedriveAccess = @{ value = $OnedriveAccessTo }

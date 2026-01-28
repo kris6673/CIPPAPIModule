@@ -4,6 +4,7 @@ Calculates the expiry date and time for a token.
 
 .DESCRIPTION
 The Get-TokenExpiry function calculates the expiry date and time for a token based on the token's expiration time in seconds.
+The calculated expiry is cached to avoid redundant calculations on every API call.
 
 .PARAMETER ExpiresIn
 Specifies the expiration time of the token in seconds. If not provided, the function uses the default expiration time stored in the $script:ExpiresIn variable.
@@ -27,8 +28,12 @@ function Get-TokenExpiry {
     )
     if ($script:ExpiresIn -eq $null) {
         return
-    } else {
+    }
+    
+    # Only recalculate if ExpiryDateTime is not already set or if token acquisition time changed
+    if (-not $Script:ExpiryDateTime -or $Script:LastCalculatedTokenTime -ne $script:TokenAcquiredTime) {
         $Script:ExpiryDateTime = $script:TokenAcquiredTime.AddSeconds($script:ExpiresIn)
+        $Script:LastCalculatedTokenTime = $script:TokenAcquiredTime
         Write-Verbose "Calculated token expiry as $Script:ExpiryDateTime"
     }
 }
